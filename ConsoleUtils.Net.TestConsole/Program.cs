@@ -1,9 +1,4 @@
-﻿using ConsoleUtils.Net;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace ConsoleUtils.Net.TestConsole
 {
@@ -14,8 +9,14 @@ namespace ConsoleUtils.Net.TestConsole
             "This is a blue line".ToConsole(ConsoleColor.Blue);
             "This is a red line".ToConsole(ConsoleColor.Red);
 
-            var value = "Test";
-            $"This is a {value} Value".ToConsole(ConsoleColor.Cyan);
+            var value = ConsoleColor.Cyan;
+            var msg = $"This is a {value} line".ToConsole(value);
+
+            ConsoleClipboard.SetText(msg);
+
+            $"This is a ".ToConsole(ConsoleColor.Gray, false);
+            $"{value}".ToConsole(value, false);
+            " value".ToConsole(ConsoleColor.Gray, false);
             Console.ReadLine();
         }
     }
