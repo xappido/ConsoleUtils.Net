@@ -8,6 +8,9 @@ using System.Text;
 
 namespace ConsoleUtils.Net
 {
+    /// <summary>
+    /// Provides clipboard functionality to the console without the use of Forms.
+    /// </summary>
     public class ConsoleClipboard
     {
         #region Win32 Functions
@@ -47,6 +50,9 @@ namespace ConsoleUtils.Net
 
 #endregion
 
+        /// <summary>
+        /// The result code
+        /// </summary>
         public enum ResultCode
         {
             Success = 0,
@@ -62,38 +68,62 @@ namespace ConsoleUtils.Net
             ErrorGetLastError = 9
         };
 
+        /// <summary>
+        /// The result object
+        /// </summary>
         public class Result
         {
+            /// <summary>
+            /// Provided result code
+            /// </summary>
             public ResultCode ResultCode { get; set; }
 
+            /// <summary>
+            /// Last error
+            /// </summary>
             public uint LastError { get; set; }
 
-            public bool OK
-            {
-                get { return ResultCode.Success == ResultCode; }
-            }
+            /// <summary>
+            /// Ok
+            /// </summary>
+            public bool Ok => ResultCode.Success == ResultCode;
         }
 
+        /// <summary>
+        /// Sets a text to the clipboard
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         [STAThread]
-        public static Result SetText(string message)
+        public static Result SetText(string text)
         {
-            var isAscii = (message != null && (message == Encoding.ASCII.GetString(Encoding.ASCII.GetBytes(message))));
+            var isAscii = (text != null && (text == Encoding.ASCII.GetString(Encoding.ASCII.GetBytes(text))));
             if (isAscii)
             {
-                return SetUnicodeText(message);
+                return SetUnicodeText(text);
             }
             else
             {
-                return SetAnsiText(message);
+                return SetAnsiText(text);
             }
         }
 
+        /// <summary>
+        /// Sets a Unicode text to the clipboard
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         [STAThread]
-        public static Result SetUnicodeText(string message)
+        public static Result SetUnicodeText(string text)
         {
-            return SetStringToClipboard(message, CF_UNICODETEXT);
+            return SetStringToClipboard(text, CF_UNICODETEXT);
         }
 
+        /// <summary>
+        /// Sets an ANSI text to the clipboard
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
         [STAThread]
         public static Result SetAnsiText(string message)
         {
